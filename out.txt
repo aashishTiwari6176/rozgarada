@@ -1,0 +1,9 @@
+﻿Analyzing rojgar...
+
+warning - lib\splash_screen.dart:13:22 - The value of the field 'bgBlueStart' isn't used. Try removing the field, or using it. - unused_field
+warning - lib\splash_screen.dart:14:22 - The value of the field 'bgBlueEnd' isn't used. Try removing the field, or using it. - unused_field
+   info - lib\login_screen.dart:194:42 - 'withOpacity' is deprecated and shouldn't be used. Use .withValues() to avoid precision loss. Try replacing the use of the deprecated member with the replacement. - deprecated_member_use
+   info - lib\splash_screen.dart:73:53 - 'withOpacity' is deprecated and shouldn't be used. Use .withValues() to avoid precision loss. Try replacing the use of the deprecated member with the replacement. - deprecated_member_use
+   info - lib\splash_screen.dart:113:55 - 'withOpacity' is deprecated and shouldn't be used. Use .withValues() to avoid precision loss. Try replacing the use of the deprecated member with the replacement. - deprecated_member_use
+
+5 issues found.
