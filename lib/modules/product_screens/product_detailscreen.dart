@@ -2,6 +2,7 @@ import 'dart:convert';
 
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
+import 'package:rojgar/chat_user_list.dart';
 
 // ─────────────────────────────────────────────
 // COLORS
@@ -56,7 +57,10 @@ class _ProductData {
 
     final rawGallery = json['gallery_images'];
     final List<String> gallery = rawGallery is List
-        ? rawGallery.map((e) => e.toString()).where((e) => e.isNotEmpty).toList()
+        ? rawGallery
+              .map((e) => e.toString())
+              .where((e) => e.isNotEmpty)
+              .toList()
         : [];
 
     return _ProductData(
@@ -75,9 +79,9 @@ class _ProductData {
   }
 
   List<String> get allImages => [
-        if (metaImage.isNotEmpty) metaImage,
-        ...galleryImages,
-      ];
+    if (metaImage.isNotEmpty) metaImage,
+    ...galleryImages,
+  ];
 
   List<String> get featureList {
     final list = features
@@ -178,9 +182,11 @@ class _ProductDetailScreenState extends State<ProductDetailScreen> {
           final rawRelated = json['related_products'];
           final related = rawRelated is List
               ? rawRelated
-                  .map((e) =>
-                      _RelatedProduct.fromJson(e as Map<String, dynamic>))
-                  .toList()
+                    .map(
+                      (e) =>
+                          _RelatedProduct.fromJson(e as Map<String, dynamic>),
+                    )
+                    .toList()
               : <_RelatedProduct>[];
 
           setState(() {
@@ -196,8 +202,7 @@ class _ProductDetailScreenState extends State<ProductDetailScreen> {
         }
       } else {
         setState(() {
-          _error =
-              'Server error (${response.statusCode}). Please try again.';
+          _error = 'Server error (${response.statusCode}). Please try again.';
           _isLoading = false;
         });
       }
@@ -241,14 +246,16 @@ class _ProductDetailScreenState extends State<ProductDetailScreen> {
           child: Column(
             mainAxisSize: MainAxisSize.min,
             children: [
-              const Icon(Icons.wifi_off_rounded,
-                  size: 52, color: Color(0xFF8A8FA3)),
+              const Icon(
+                Icons.wifi_off_rounded,
+                size: 52,
+                color: Color(0xFF8A8FA3),
+              ),
               const SizedBox(height: 16),
               Text(
                 _error!,
                 textAlign: TextAlign.center,
-                style:
-                    const TextStyle(color: Color(0xFF8A8FA3), fontSize: 15),
+                style: const TextStyle(color: Color(0xFF8A8FA3), fontSize: 15),
               ),
               const SizedBox(height: 20),
               ElevatedButton.icon(
@@ -275,8 +282,8 @@ class _ProductDetailScreenState extends State<ProductDetailScreen> {
     final images = product.allImages;
     final currentImage =
         images.isNotEmpty && _selectedImageIndex < images.length
-            ? images[_selectedImageIndex]
-            : null;
+        ? images[_selectedImageIndex]
+        : null;
 
     return SingleChildScrollView(
       child: Column(
@@ -351,8 +358,11 @@ class _ProductDetailScreenState extends State<ProductDetailScreen> {
                       padding: const EdgeInsets.only(bottom: 6),
                       child: Row(
                         children: [
-                          const Icon(Icons.check_rounded,
-                              color: _DC.greenCheck, size: 18),
+                          const Icon(
+                            Icons.check_rounded,
+                            color: _DC.greenCheck,
+                            size: 18,
+                          ),
                           const SizedBox(width: 8),
                           Expanded(
                             child: Text(
@@ -388,7 +398,14 @@ class _ProductDetailScreenState extends State<ProductDetailScreen> {
                         fontWeight: FontWeight.w700,
                       ),
                     ),
-                    onPressed: () {},
+                    onPressed: () {
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder: (context) => ChatUserListScreen(),
+                        ),
+                      );
+                    },
                     child: const Text('Chat with Seller'),
                   ),
                 ),
@@ -503,8 +520,7 @@ class _ThumbnailRow extends StatelessWidget {
                 color: const Color(0xFFF0F0F5),
                 borderRadius: BorderRadius.circular(10),
                 border: Border.all(
-                  color:
-                      isSelected ? _DC.primary : const Color(0xFFDDDDEE),
+                  color: isSelected ? _DC.primary : const Color(0xFFDDDDEE),
                   width: isSelected ? 2 : 1,
                 ),
               ),
@@ -541,10 +557,7 @@ class _PriceRow extends StatelessWidget {
   });
 
   String _fmt(double price) {
-    return '₹${price.toStringAsFixed(0).replaceAllMapped(
-          RegExp(r'(\d)(?=(\d{3})+(?!\d))'),
-          (m) => '${m[1]},',
-        )}';
+    return '₹${price.toStringAsFixed(0).replaceAllMapped(RegExp(r'(\d)(?=(\d{3})+(?!\d))'), (m) => '${m[1]},')}';
   }
 
   @override
@@ -605,8 +618,18 @@ class _SpecsRow extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final List<_SpecItem> specs = [
-      if (warranty.isNotEmpty) _SpecItem(icon: Icons.verified_rounded, label: 'Warranty', value: warranty),
-      if (capacity.isNotEmpty) _SpecItem(icon: Icons.people_rounded, label: 'Capacity', value: capacity),
+      if (warranty.isNotEmpty)
+        _SpecItem(
+          icon: Icons.verified_rounded,
+          label: 'Warranty',
+          value: warranty,
+        ),
+      if (capacity.isNotEmpty)
+        _SpecItem(
+          icon: Icons.people_rounded,
+          label: 'Capacity',
+          value: capacity,
+        ),
     ];
 
     if (specs.isEmpty) return const SizedBox.shrink();
@@ -618,7 +641,9 @@ class _SpecsRow extends StatelessWidget {
               child: Container(
                 margin: const EdgeInsets.only(right: 10),
                 padding: const EdgeInsets.symmetric(
-                    horizontal: 12, vertical: 10),
+                  horizontal: 12,
+                  vertical: 10,
+                ),
                 decoration: BoxDecoration(
                   color: const Color(0xFFF5F6FF),
                   borderRadius: BorderRadius.circular(10),
@@ -664,7 +689,11 @@ class _SpecItem {
   final IconData icon;
   final String label;
   final String value;
-  const _SpecItem({required this.icon, required this.label, required this.value});
+  const _SpecItem({
+    required this.icon,
+    required this.label,
+    required this.value,
+  });
 }
 
 // ─────────────────────────────────────────────
@@ -700,10 +729,7 @@ class _RelatedProductsGrid extends StatelessWidget {
   });
 
   String _fmt(double price) {
-    return '₹${price.toStringAsFixed(0).replaceAllMapped(
-          RegExp(r'(\d)(?=(\d{3})+(?!\d))'),
-          (m) => '${m[1]},',
-        )}';
+    return '₹${price.toStringAsFixed(0).replaceAllMapped(RegExp(r'(\d)(?=(\d{3})+(?!\d))'), (m) => '${m[1]},')}';
   }
 
   @override
@@ -743,7 +769,8 @@ class _RelatedProductsGrid extends StatelessWidget {
                   children: [
                     ClipRRect(
                       borderRadius: const BorderRadius.vertical(
-                          top: Radius.circular(16)),
+                        top: Radius.circular(16),
+                      ),
                       child: Container(
                         height: 120,
                         width: double.infinity,
@@ -771,7 +798,9 @@ class _RelatedProductsGrid extends StatelessWidget {
                         right: 8,
                         child: Container(
                           padding: const EdgeInsets.symmetric(
-                              horizontal: 7, vertical: 3),
+                            horizontal: 7,
+                            vertical: 3,
+                          ),
                           decoration: BoxDecoration(
                             color: _DC.offBadgeBg,
                             borderRadius: BorderRadius.circular(4),
